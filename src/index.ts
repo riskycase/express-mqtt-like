@@ -6,6 +6,7 @@ interface socketStatus {
 	socket: WebSocket;
 	timer: NodeJS.Timeout;
 	isAlive: boolean;
+	topics: Set<String>;
 }
 
 let webSocketStatuses: socketStatus[] = [];
@@ -29,6 +30,7 @@ wss.on('connection', socket => {
 				socket.ping();
 			}
 		}, 15000),
+		topics: new Set(),
 	});
 	socket.on('pong', () => {
 		webSocketStatuses.find(status => status.socket === socket).isAlive =
@@ -40,6 +42,26 @@ wss.on('connection', socket => {
 		);
 		clearInterval(webSocketStatuses[index].timer);
 		webSocketStatuses.splice(index, 1);
+	});
+	socket.on('message', message => {
+		const messageJSON = JSON.parse(message.toString());
+		const status = webSocketStatuses.find(
+			status => status.socket === socket
+		);
+		if (messageJSON.type === 'subscribe') {
+			status.topics.add(messageJSON.topic);
+		} else if (messageJSON.type === 'unsubscribe') {
+			status.topics.delete(messageJSON.topic);
+		} else if (messageJSON.type === 'message') {
+			webSocketStatuses.forEach(status => {
+				if (
+					status.topics.has(messageJSON.topic) &&
+					socket !== status.socket
+				) {
+					status.socket.send(JSON.stringify(messageJSON));
+				}
+			});
+		}
 	});
 });
 
