@@ -11,3 +11,45 @@
 .submit-button {
 	align-self: flex-end;
 }
+.subscribe-container {
+	display: flex;
+	flex-direction: column;
+}
+.subscribe-container > * {
+	margin: 0.5rem;
+}
+.subscribe-container > label {
+	margin-bottom: 0.125rem;
+}
+.subscribe-topic-input {
+	display: flex;
+	align-items: center;
+}
+.subscribe-topic-input > * {
+	margin: 0.25rem;
+}
+.hide {
+	display: none;
+}
+.subscribe-topic-messages {
+	display: flex;
+	flex-direction: column;
+	border: 2px solid cornflowerblue;
+	border-radius: 0.5rem;
+	padding: 0.75rem;
+}
+.subscribe-topic-messages-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.subscribe-topic-messages-content {
+	display: flex;
+	flex-direction: column;
+}
+.subscribe-topic-messages-content > span {
+	border-bottom: 2px solid rgba(64, 64, 64, 0.6);
+}
+.subscribe-topic-messages-content:last-child {
+	border: none;
+}

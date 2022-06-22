@@ -71,7 +71,33 @@
 							</div>
 						</form>
 					</li>
-					<li>Subscriber</li>
+					<li>
+						<form id="subscribe-form">
+							<div class="subscribe-container">
+								<label for="subscribe-topic">Topic</label>
+								<div class="subscribe-topic-input">
+									<input
+										type="text"
+										class="uk-input"
+										id="subscribe-topic"
+										placeholder="/device/sensor"
+										required
+										pattern="\S+.+"
+									/>
+									<button
+										class="uk-button uk-button-primary"
+										type="submit"
+										id="subscribe-topic-submit"
+									>
+										Subscribe
+									</button>
+								</div>
+								<span class="uk-text-lead" id="no-subscribe"
+									>No topics subscribed!</span
+								>
+							</div>
+						</form>
+					</li>
 				</ul>
 			</div>
 		</div>
