@@ -1,6 +1,9 @@
 let publishTopic = '';
 let publishMessage = '';
 
+const url = new URL(window.location.href);
+const websocket = new WebSocket(`ws://${url.host}`);
+
 function validate() {
 	return publishTopic.trim() !== '' && publishMessage.trim() !== '';
 }
@@ -28,7 +31,14 @@ document.getElementById('publish-message').addEventListener('keyup', e => {
 document.getElementById('publish-form').addEventListener('submit', e => {
 	e.preventDefault();
 	if (validate()) {
-		// TODO: Add websocket publish
+		websocket.send(
+			JSON.stringify({
+				type: 'message',
+				topic: publishTopic,
+				message: publishMessage,
+			})
+		);
+		UIkit.notification('Sent message successfully!', 'success');
 	} else {
 		if (publishTopic.trim() === '')
 			UIkit.notification('Topic cannot be empty!', 'danger');
@@ -77,10 +87,18 @@ document.getElementById('subscribe-form').addEventListener('submit', e => {
 			document
 				.querySelector('.subscribe-container')
 				.appendChild(container);
+			websocket.send(
+				JSON.stringify({
+					type: 'subscribe',
+					topic: currentTopic,
+				})
+			);
+			document.getElementById('subscribe-topic').value = '';
 			UIkit.notification(
 				`Successfully subscribed to ${currentTopic.trim()}`,
 				'success'
 			);
+			currentTopic = '';
 		}
 	} else {
 		UIkit.notification('Topic cannot be empty!', 'danger');
@@ -90,6 +108,12 @@ document.getElementById('subscribe-form').addEventListener('submit', e => {
 function unsubscribe(encodedTopic) {
 	document.getElementById(`subscribed-topic-${encodedTopic}`).remove();
 	subscribedTopics.delete(decodeURIComponent(encodedTopic));
+	websocket.send(
+		JSON.stringify({
+			type: 'unsubscribe',
+			topic: decodeURIComponent(encodedTopic),
+		})
+	);
 	if (subscribedTopics.size === 0)
 		document.getElementById('no-subscribe').className = 'uk-text-lead';
 	UIkit.notification(
@@ -97,3 +121,14 @@ function unsubscribe(encodedTopic) {
 		'success'
 	);
 }
+
+websocket.onmessage = e => {
+	const messageJSON = JSON.parse(e.data);
+	if (messageJSON.type === 'message') {
+		const messageSpan = document.createElement('span');
+		messageSpan.innerHTML = messageJSON.message;
+		document
+			.getElementById(`messages-${encodeURIComponent(messageJSON.topic)}`)
+			.appendChild(messageSpan);
+	}
+};
