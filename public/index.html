@@ -1,15 +1,107 @@
 <!DOCTYPE html>
 <html lang="en-IN">
 	<head>
-		<!-- Required meta tags-->
 		<meta charset="utf-8" />
-		<meta
-			name="viewport"
-			content="width=device-width, initial-scale=1, shrink-to-fit=no"
+		<title>SCD-2022-02 Seminar POC</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+		<!-- UIkit CSS -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.jsdelivr.net/npm/uikit@3.14.3/dist/css/uikit.min.css"
 		/>
-		<title>Broadcast 'em</title>
+
+		<!-- UIkit JS -->
+		<script src="https://cdn.jsdelivr.net/npm/uikit@3.14.3/dist/js/uikit.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/uikit@3.14.3/dist/js/uikit-icons.min.js"></script>
+
+		<!-- Self CSS -->
+		<link rel="stylesheet" href="index.css" />
 	</head>
 	<body>
-		<h1>Hello world</h1>
+		<nav class="uk-navbar-container uk-padding-small">
+			<div class="uk-navbar-center">
+				<ul class="uk-navbar-nav">
+					<li class="uk-text-large">MQTT protocol demonstration</li>
+				</ul>
+			</div>
+		</nav>
+		<div class="uk-section">
+			<div class="uk-container uk-container-expand">
+				<ul
+					uk-tab="animation: uk-animation-slide-left-medium, uk-animation-slide-right-medium"
+					class="uk-flex-center"
+				>
+					<li><a href="">Publisher</a></li>
+					<li><a href="">Subscriber</a></li>
+				</ul>
+				<ul class="uk-switcher">
+					<li>
+						<form id="publish-form">
+							<div class="publish-container">
+								<label for="publish-topic" class="uk-form-label"
+									>Topic</label
+								>
+								<input
+									type="text"
+									class="uk-input"
+									id="publish-topic"
+									placeholder="/device/sensor"
+									required
+									pattern="\S+.+"
+								/>
+								<label
+									for="publish-message"
+									class="uk-form-label"
+									>Message</label
+								>
+								<textarea
+									class="uk-textarea"
+									id="publish-message"
+									placeholder="Hello world"
+									required
+								></textarea>
+								<button
+									class="uk-button uk-button-primary uk-button-disabled uk-flex-right submit-button"
+									type="submit"
+									id="publish-submit"
+								>
+									Send
+								</button>
+							</div>
+						</form>
+					</li>
+					<li>
+						<form id="subscribe-form">
+							<div class="subscribe-container">
+								<label for="subscribe-topic">Topic</label>
+								<div class="subscribe-topic-input">
+									<input
+										type="text"
+										class="uk-input"
+										id="subscribe-topic"
+										placeholder="/device/sensor"
+										required
+										pattern="\S+.+"
+									/>
+									<button
+										class="uk-button uk-button-primary"
+										type="submit"
+										id="subscribe-topic-submit"
+									>
+										Subscribe
+									</button>
+								</div>
+								<span class="uk-text-lead" id="no-subscribe"
+									>No topics subscribed!</span
+								>
+							</div>
+						</form>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- Self JS -->
+		<script src="index.js"></script>
 	</body>
 </html>
