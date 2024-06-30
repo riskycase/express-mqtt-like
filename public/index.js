@@ -2,7 +2,9 @@ let publishTopic = '';
 let publishMessage = '';
 
 const url = new URL(window.location.href);
-const websocket = new WebSocket(`wss://${url.host}`);
+const websocket = new WebSocket(
+	`ws${url.protocol === 'https:' ? 's' : ''}://${url.host}`
+);
 
 function validate() {
 	return publishTopic.trim() !== '' && publishMessage.trim() !== '';
