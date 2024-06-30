@@ -56,7 +56,7 @@ wss.on('connection', socket => {
 			webSocketStatuses.forEach(status => {
 				if (
 					[...status.topics].some(topic =>
-						topic.startsWith(messageJSON.topic)
+						messageJSON.topic.startsWith(topic)
 					)
 				) {
 					status.socket.send(JSON.stringify(messageJSON));
